@@ -28,4 +28,12 @@ RSpec.describe "Student Index" do
       expect(page).to have_content(casseopia.house)
     end
   end
+  it "students are in alphabetical order" do
+    harry = Student.create(name: "Harry Potter", house: "Griffyndor", age: 14)
+    casseopia = Student.create(name: "Casseopia Black", age: 18, house: "Slytherin")
+
+    visit '/students'
+
+    expect(casseopia.name).to appear_before(harry.name)
+  end
 end

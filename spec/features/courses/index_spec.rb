@@ -30,4 +30,22 @@ RSpec.describe 'course index' do
       expect(page).to have_content("#{spells.name}: #{spells.student_count}")
     end
   end
+
+  it "shows courses and students in alphabetical order" do
+    harry = Student.create(name: "Harry Potter", house: "Griffyndor", age: 14)
+    casseopia = Student.create(name: "Casseopia Black", age: 18, house: "Slytherin")
+
+    potions = Course.create!(name: "Potions")
+    spells = Course.create!(name: "Spells")
+
+    potions.students << casseopia
+    potions.students << harry
+    spells.students << harry
+
+    visit '/courses'
+
+    within "#course-#{potions.id}" do
+      expect(casseopia.name).to appear_before(harry.name)
+    end
+  end
 end
